@@ -1,5 +1,7 @@
-# 新しいメールを受信したらコンソール画面に件名を表示させる
+# Outlookで新規メールを受信したらその件名をコンソール画面に出力するスクリプト
+# 処理の条件：Outlookを立ち上げている必要がある（そもそも立ち上げていないとメール受信できない)
 import win32com.client
+import win32timezone 
 import time
 
 def on_new_mail(item):
@@ -15,14 +17,14 @@ def main():
     inbox_items = inbox.Items
     inbox_items.Sort("[ReceivedTime]", True)
 
-    # 初期のメールを取得
+    # 受信トレイの最新メールを取得
     latest_item = inbox_items.GetFirst()
     latest_time = latest_item.ReceivedTime if latest_item else None
 
     while True:
         time.sleep(5)  # 5秒間隔でチェック
-
-        # 最新のメールを再取得
+        
+        # 最新のメールを取得
         inbox_items = inbox.Items
         inbox_items.Sort("[ReceivedTime]", True)
         current_item = inbox_items.GetFirst()
@@ -30,6 +32,7 @@ def main():
         if current_item and (latest_time is None or current_item.ReceivedTime != latest_time):
             latest_time = current_item.ReceivedTime
             on_new_mail(current_item)
+        
 
 if __name__ == "__main__":
     main()
