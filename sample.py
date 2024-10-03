@@ -7,6 +7,9 @@ import time
 def on_new_mail(item):
     if item.Class == 43:  # 43はMailItemのクラス
         print(f"新しいメールを受信しました: {item.Subject}")
+        print(f"送信者：{item.SenderName}")
+        print(f"受信日時：{item.ReceivedTime}")
+        print(f"本文：{item.Body}")
 
 def main():
     outlook = win32com.client.Dispatch("Outlook.Application")
